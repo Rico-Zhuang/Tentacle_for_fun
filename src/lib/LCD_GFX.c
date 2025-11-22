@@ -1,0 +1,264 @@
+/*
+ * LCD_GFX.c
+ *
+ * Created: 9/20/2021 6:54:25 PM
+ *  Author: You
+ */ 
+
+#include "LCD_GFX.h"
+#include "ST7735.h"
+#include <math.h>
+
+/******************************************************************************
+* Local Functions
+******************************************************************************/
+
+
+
+/******************************************************************************
+* Global Functions
+******************************************************************************/
+
+/**************************************************************************//**
+* @fn			uint16_t rgb565(uint8_t red, uint8_t green, uint8_t blue)
+* @brief		Convert RGB888 value to RGB565 16-bit color data
+* @note
+*****************************************************************************/
+uint16_t rgb565(uint8_t red, uint8_t green, uint8_t blue)
+{
+	return ((((31*(red+4))/255)<<11) | (((63*(green+2))/255)<<5) | ((31*(blue+4))/255));
+}
+
+/**************************************************************************//**
+* @fn			void LCD_drawPixel(uint8_t x, uint8_t y, uint16_t color)
+* @brief		Draw a single pixel of 16-bit rgb565 color to the x & y coordinate
+* @note
+*****************************************************************************/
+void LCD_drawPixel(uint8_t x, uint8_t y, uint16_t color) {
+	LCD_setAddr(x,y,x,y);
+	SPI_ControllerTx_16bit(color);
+}
+
+/**************************************************************************//**
+* @fn			void LCD_drawChar(uint8_t x, uint8_t y, uint16_t character, uint16_t fColor, uint16_t bColor)
+* @brief		Draw a character starting at the point with foreground and background colors
+* @note
+*****************************************************************************/
+void LCD_drawChar(uint8_t x, uint8_t y, uint16_t character, uint16_t fColor, uint16_t bColor){
+	uint16_t row = character - 0x20;		//Determine row of ASCII table starting at space
+	int i, j;
+	if ((LCD_WIDTH-x>7)&&(LCD_HEIGHT-y>7)){
+		for(i=0;i<5;i++){
+			uint8_t pixels = ASCII[row][i]; //Go through the list of pixels
+			for(j=0;j<8;j++){
+				if ((pixels>>j)&1==1){
+					LCD_drawPixel(x+i,y+j,fColor);
+				}
+				else {
+					LCD_drawPixel(x+i,y+j,bColor);
+				}
+			}
+		}
+	}
+}
+
+
+/******************************************************************************
+* LAB 4 TO DO. COMPLETE THE FUNCTIONS BELOW.
+* You are free to create and add any additional files, libraries, and/or
+*  helper function. All code must be authentically yours.
+******************************************************************************/
+
+/**************************************************************************//**
+* @fn			void LCD_drawCircle(uint8_t x0, uint8_t y0, uint8_t radius,uint16_t color)
+* @brief		Draw a colored circle of set radius at coordinates
+* @note
+*****************************************************************************/
+
+static inline void drawHSpan(int16_t x0, int16_t x1, int16_t y, uint16_t color)
+{
+    if (x0 > x1) { int16_t t = x0; x0 = x1; x1 = t; }
+    LCD_setAddr((uint8_t)x0, (uint8_t)y, (uint8_t)x1, (uint8_t)y);
+    for (int16_t x = x0; x <= x1; x++) {
+        SPI_ControllerTx_16bit(color);
+    }
+}
+
+void LCD_drawCircle(uint8_t x0, uint8_t y0, uint8_t radius, uint16_t color)
+{
+    int16_t cx = x0, cy = y0;
+    int16_t x  = radius;
+    int16_t y  = 0;
+    int16_t d  = 1 - (int16_t)radius;
+
+    // center scanline
+    drawHSpan(cx - x, cx + x, cy, color);
+
+    while (y < x) {
+        y++;
+        if (d < 0) {
+            d += (y << 1) + 1;           // move vertically
+        } else {
+            x--;
+            d += ((y - x) << 1) + 1;     // move diagonally
+        }
+
+        // four symmetric filled spans
+        drawHSpan(cx - x, cx + x, cy + y, color);
+        drawHSpan(cx - x, cx + x, cy - y, color);
+        drawHSpan(cx - y, cx + y, cy + x, color);
+        drawHSpan(cx - y, cx + y, cy - x, color);
+    }
+}
+
+
+/**************************************************************************//**
+* @fn			void LCD_drawLine(short x0,short y0,short x1,short y1,uint16_t c)
+* @brief		Draw a line from and to a point with a color
+* @note
+*****************************************************************************/
+void LCD_drawLine(short x0,short y0,short x1,short y1,uint16_t c)
+{
+	// Fill this out
+    float gradient = (float) (y1 - y0) / (x1 - x0);
+    int delta_y = 0;
+    if (x0<x1) // x0<x1 increment
+    {
+        for(uint8_t x=x0; x<=x1; x++)
+        {
+            delta_y = (int) round(gradient * (x - x0)); // round delta y
+            LCD_drawPixel(x, y0 + delta_y, c);
+        }
+    }
+    else if(x0>x1)// x0>x1 decrement
+    {
+        for(uint8_t x=x0; x>=x1; x--)
+        {
+            delta_y = (int) round(gradient * (x - x0)); // round delta y
+            LCD_drawPixel(x, y0 + delta_y, c);
+        }
+    }
+    else // x0=x1
+    {  
+        if (y0<=y1) // x0<x1 increment
+    {
+        for(uint8_t y=y0; y<=y1; y++)
+        {
+            LCD_drawPixel(x0, y, c);
+        }
+    }
+    else if(y0>y1)// x0>x1 decrement
+    {
+        for(uint8_t y=y0; y>=y1; y--)
+        {
+
+            LCD_drawPixel(x0, y, c);
+        }
+    }
+    }
+}
+
+
+
+/**************************************************************************//**
+* @fn			void LCD_drawBlock(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1,uint16_t color)
+* @brief		Draw a colored block at coordinates
+* @note
+*****************************************************************************/
+void LCD_drawBlock(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1,uint16_t color)
+{
+    LCD_setAddr(x0, y0, x1, y1);
+    uint32_t count = (uint32_t)(x1-x0) * (uint32_t)(y1-y0);
+    while (count--) {
+        SPI_ControllerTx_16bit(color);
+    }
+}
+
+/**************************************************************************//**
+* @fn			void LCD_setScreen(uint16_t color)
+* @brief		Draw the entire screen to a color
+* @note
+*****************************************************************************/
+void LCD_setScreen(uint16_t color)
+{
+    // Set a single drawing window = full screen
+    LCD_setAddr(0, 0, LCD_WIDTH - 1, LCD_HEIGHT - 1);
+
+    // Stream the same color for every pixel
+    uint32_t count = (uint32_t)LCD_WIDTH * (uint32_t)LCD_HEIGHT;
+    while (count--) {
+        SPI_ControllerTx_16bit(color);
+    }
+}
+
+/**************************************************************************//**
+* @fn			void LCD_drawString(uint8_t x, uint8_t y, char* str, uint16_t fg, uint16_t bg)
+* @brief		Draw a string starting at the point with foreground and background colors
+* @note
+*****************************************************************************/
+void LCD_drawString(uint8_t x, uint8_t y, char* str, uint16_t fg, uint16_t bg)
+{
+	// Fill this out
+    // one character, 6x8. x: 6 pixel, y: 8 pixel
+    for (uint8_t i=0; str[i]!='\0'; i++)
+    {
+        LCD_drawChar(x + i * 6, y, str[i], fg, bg);
+    }
+}
+
+// mouth size 16×10
+// void LCD_drawCatMouth(uint8_t x, uint8_t y, uint16_t color) {
+// uint16_t mouth[10] = {
+//     0b1111111100000000,
+//     0b1111111100000000,
+//     0b1111111100000000,
+//     0b1111111100000000,
+//     0b1111111100000000,
+//     0b1111111100000000,
+//     0b1111111100000000,
+//     0b1111111100000000,
+//     0b1111111100000000,
+//     0b1111111100000000
+// };
+//     LCD_setAddr(x - 8, y - 5, x + 8, y + 5);
+
+//     for (uint8_t i = 0; i < 10; i++) {
+//         uint16_t bits = mouth[i];
+//         for (uint16_t mask = (1u << 15); mask != 0; mask >>= 1) {
+//             LCD_drawPixel(x+i,y+j,fColor);
+//         }
+//     }
+// }
+void LCD_drawCatMouth(uint8_t x, uint8_t y, uint16_t color) {
+uint16_t mouth[10] = {
+    0b0000000000000000,
+    0b0011110000111100,
+    0b0111111001111110,
+    0b1111011111101111,
+    0b1110001111000111,
+    0b1100000110000011,
+    0b1100000110000011,
+    0b1100001111000011,
+    0b1100000000000011,
+    0b1110000000000111
+};
+
+    for (uint8_t row = 0; row < 10; row++) {
+        uint16_t bits = mouth[row];
+
+        for (uint8_t col = 0; col < 16; col++) {
+            // mask bit: leftmost is bit 15
+            uint16_t mask = 1u << (15 - col);
+
+            // compute screen pixel position
+            uint8_t px = x - 8 + col;
+            uint8_t py = y - 5 + row;
+
+            if (bits & mask) {
+                LCD_drawPixel(px, py, color);
+            } else {
+                LCD_drawPixel(px, py, BLACK);
+            }
+        }
+    }
+}
