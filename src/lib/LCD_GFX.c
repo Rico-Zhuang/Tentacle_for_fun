@@ -168,7 +168,7 @@ void LCD_drawLine(short x0,short y0,short x1,short y1,uint16_t c)
 void LCD_drawBlock(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1,uint16_t color)
 {
     LCD_setAddr(x0, y0, x1, y1);
-    uint32_t count = (uint32_t)(x1-x0) * (uint32_t)(y1-y0);
+    uint32_t count = (uint32_t)(x1-x0+1) * (uint32_t)(y1-y0+1);
     while (count--) {
         SPI_ControllerTx_16bit(color);
     }
