@@ -262,3 +262,54 @@ uint16_t mouth[10] = {
         }
     }
 }
+
+void LCD_fillCircle(uint8_t x0, uint8_t y0, uint8_t r, uint16_t color)
+{
+    for (int16_t y = -r; y <= r; y++) {
+        int16_t x_span = (int16_t)(sqrt((float)(r * r - y * y)));
+        LCD_drawLine(x0 - x_span, y0 + y, x0 + x_span, y0 + y, color);
+    }
+}
+
+void LCD_drawArc(uint8_t cx, uint8_t cy, uint8_t r,
+                      float start_angle, float end_angle,
+                      uint8_t thickness, uint16_t color)
+{
+    float step = 0.5f;  
+
+    for (float angle = start_angle; angle <= end_angle; angle += step)
+    {
+        float rad = angle * M_PI / 180.0f;
+
+        for (int t = 0; t < thickness; t++)
+        {
+            float rr = r - (thickness / 2.0f) + t;
+            int x = (int)(cx + rr * cos(rad));
+            int y = (int)(cy + rr * sin(rad));
+            LCD_drawPixel(x, y, color);
+        }
+    }
+}
+
+void LCD_drawThickLine(short x0, short y0, short x1, short y1, uint8_t thickness, uint16_t color)
+{
+    int dx = x1 - x0;
+    int dy = y1 - y0;
+    float length = sqrt(dx * dx + dy * dy);
+
+  
+    float ux = dx / length;
+    float uy = dy / length;
+
+   
+    float px = -uy;
+    float py = ux;
+    
+    for (int t = -thickness / 2; t <= thickness / 2; t++)
+    {
+        short offsetX = (short)(px * t);
+        short offsetY = (short)(py * t);
+        LCD_drawLine(x0 + offsetX, y0 + offsetY, x1 + offsetX, y1 + offsetY, color);
+    }
+}
+
