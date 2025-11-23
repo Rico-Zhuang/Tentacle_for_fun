@@ -49,8 +49,10 @@ static void lcd_pin_init(void)
 *****************************************************************************/
 static void SPI_Controller_Init(void)
 {
-	SPCR0 = (1<<SPE) | (1<<MSTR);		//Enable SPI, Master, set clock rate fck/64
-	SPSR0 = (1<<SPI2X);										//SPI 2X speed
+	//SPCR0 = (1<<SPE) | (1<<MSTR);		//Enable SPI, Master, set clock rate fck/64
+	//SPSR0 = (1<<SPI2X);										//SPI 2X speed
+	SPCR0 = (1<<SPE) | (1<<MSTR) | (0<<SPR1) | (0<<SPR0); 
+	SPSR0 = (1<<SPI2X);
 }
 
 
@@ -272,3 +274,4 @@ void LCD_rotate(uint8_t r)
 	
 	sendCommands(ST7735_cmds, 1);
 }
+
