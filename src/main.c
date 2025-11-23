@@ -78,11 +78,54 @@ void angry_frame(){
     }
 }
 
+void happy_frame(){
+    uint8_t cx = LCD_WIDTH / 2;
+    uint8_t cy = LCD_HEIGHT / 2;
+
+    //face
+    LCD_fillCircle(cx, cy, 55, EYELLOW);
+
+    //eye
+    LCD_drawArc(cx-25, cy-10, 15, 180, 360, 3, BROWN); 
+    LCD_drawArc(cx+25, cy-10, 15, 180, 360, 3, BROWN); 
+
+    //mouth
+    LCD_drawThickLine(cx-38, cy+14, cx+38, cy+14, 3, BROWN);
+    LCD_drawArc(cx, cy+3, 40, 20, 160, 3, BROWN); 
+    LCD_drawThickLine(cx-8, cy+14, cx-8, cy+42, 3, BROWN);//left two
+    LCD_drawThickLine(cx+8, cy+14, cx+8, cy+42, 3, BROWN);//right two
+    LCD_drawThickLine(cx-23, cy+14, cx-23, cy+34, 3, BROWN);//left one
+    LCD_drawThickLine(cx+23, cy+14, cx+23, cy+34, 3, BROWN);//right one
+    
+    //eyebrow
+    LCD_drawArc(cx-35, cy-40, 10, 180, 320, 3, BROWN); //white
+    LCD_drawArc(cx-35, cy-40, 10, 320, 360, 3, BROWN); //yellow
+    LCD_drawArc(cx+35, cy-40, 10, 180, 220, 3, BROWN); //yellow
+    LCD_drawArc(cx+35, cy-40, 10, 220, 360, 3, BROWN); //white
+    
+    while(1){
+        LCD_drawArc(cx-25, cy-10, 15, 180, 360, 3, EYELLOW); 
+        LCD_drawArc(cx+25, cy-10, 15, 180, 360, 3, EYELLOW); 
+        _delay_ms(1);
+        LCD_drawArc(cx-25, cy-15, 15, 180, 360, 3, BROWN); 
+        LCD_drawArc(cx+25, cy-15, 15, 180, 360, 3, BROWN); 
+        _delay_ms(200);
+        LCD_drawArc(cx-25, cy-15, 15, 180, 360, 3, EYELLOW); 
+        LCD_drawArc(cx+25, cy-15, 15, 180, 360, 3, EYELLOW); 
+        _delay_ms(1);
+        LCD_drawArc(cx-25, cy-10, 15, 180, 360, 3, BROWN); 
+        LCD_drawArc(cx+25, cy-10, 15, 180, 360, 3, BROWN); 
+        _delay_ms(200);
+    }
+}
+
+
 
 int main(void)
 {
     lcd_init();
     LCD_setScreen(WHITE);
-    angry_frame();
+    //angry_frame();
+    happy_frame();
   
 }

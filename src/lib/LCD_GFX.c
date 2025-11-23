@@ -51,7 +51,7 @@ void LCD_drawChar(uint8_t x, uint8_t y, uint16_t character, uint16_t fColor, uin
 		for(i=0;i<5;i++){
 			uint8_t pixels = ASCII[row][i]; //Go through the list of pixels
 			for(j=0;j<8;j++){
-				if ((pixels>>j)&1==1){
+				if ((pixels>>j)&(1==1)){
 					LCD_drawPixel(x+i,y+j,fColor);
 				}
 				else {
