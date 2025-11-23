@@ -86,8 +86,8 @@ void happy_frame(){
     LCD_fillCircle(cx, cy, 55, EYELLOW);
 
     //eye
-    LCD_drawArc_fast(cx-25, cy-10, 15, 180, 360, 3, BROWN); 
-    LCD_drawArc_fast(cx+25, cy-10, 15, 180, 360, 3, BROWN); 
+    LCD_drawArc_fast(cx-25, cy-10, 15, 180, 360, 4, BROWN); 
+    LCD_drawArc_fast(cx+25, cy-10, 15, 180, 360, 4, BROWN); 
 
     //mouth
     LCD_drawThickLine(cx-38, cy+16, cx+38, cy+16, 2, BROWN);
@@ -105,15 +105,15 @@ void happy_frame(){
     
     
     while(1){
-        LCD_drawBlock(cx-42, cy-30, cx+42, cy, EYELLOW);
+        LCD_drawBlock(cx-44, cy-30, cx+44, cy+5, EYELLOW);
         _delay_ms(1);
-        LCD_drawArc_fast(cx-25, cy-15, 15, 180, 360, 3, BROWN); 
-        LCD_drawArc_fast(cx+25, cy-15, 15, 180, 360, 3, BROWN); 
+        LCD_drawArc_fast(cx-25, cy-15, 15, 180, 360, 4, BROWN); 
+        LCD_drawArc_fast(cx+25, cy-15, 15, 180, 360, 4, BROWN); 
         _delay_ms(500);
-        LCD_drawBlock(cx-42, cy-32, cx+42, cy, EYELLOW); 
+        LCD_drawBlock(cx-44, cy-30, cx+44, cy+5, EYELLOW);
         _delay_ms(1);
-        LCD_drawArc_fast(cx-25, cy-10, 15, 180, 360, 3, BROWN); 
-        LCD_drawArc_fast(cx+25, cy-10, 15, 180, 360, 3, BROWN); 
+        LCD_drawArc_fast(cx-25, cy-10, 15, 180, 360, 4, BROWN); 
+        LCD_drawArc_fast(cx+25, cy-10, 15, 180, 360, 4, BROWN); 
         _delay_ms(500);
     }
 }
