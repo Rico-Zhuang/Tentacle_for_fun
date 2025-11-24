@@ -51,7 +51,7 @@ void LCD_drawChar(uint8_t x, uint8_t y, uint16_t character, uint16_t fColor, uin
 		for(i=0;i<5;i++){
 			uint8_t pixels = ASCII[row][i]; //Go through the list of pixels
 			for(j=0;j<8;j++){
-				if ((pixels>>j)&1==1){
+				if ((pixels>>j)&(1==1)){
 					LCD_drawPixel(x+i,y+j,fColor);
 				}
 				else {
@@ -271,6 +271,87 @@ void LCD_fillCircle(uint8_t x0, uint8_t y0, uint8_t r, uint16_t color)
     }
 }
 
+void LCD_drawThickLine(short x0, short y0, short x1, short y1, uint8_t thickness, uint16_t color)
+{
+    int dx = x1 - x0;
+    int dy = y1 - y0;
+    float length = sqrt(dx * dx + dy * dy);
+
+  
+    float ux = dx / length;
+    float uy = dy / length;
+
+   
+    float px = -uy;
+    float py = ux;
+    
+    for (int t = -thickness / 2; t <= thickness / 2; t++)
+    {
+        short offsetX = (short)(px * t);
+        short offsetY = (short)(py * t);
+        LCD_drawLine(x0 + offsetX, y0 + offsetY, x1 + offsetX, y1 + offsetY, color);
+    }
+}
+
+
+
+void LCD_drawArc_fast(uint8_t cx, uint8_t cy, uint8_t r,
+                      uint16_t start_angle, uint16_t end_angle,
+                      uint8_t thickness, uint16_t color)
+{
+    int x = 0;
+    int y = r;
+    int d = 1 - r;
+
+    while (y >= x) {
+
+        // 8 symmetric circle points
+        int pts[8][2] = {
+            { cx + x, cy + y },
+            { cx + y, cy + x },
+            { cx - x, cy + y },
+            { cx - y, cy + x },
+            { cx - x, cy - y },
+            { cx - y, cy - x },
+            { cx + x, cy - y },
+            { cx + y, cy - x }
+        };
+
+        // For thickness: draw multiple pixels outward
+        for (int t = 0; t < thickness; t++) {
+
+            for (int i = 0; i < 8; i++) {
+                int px = pts[i][0];
+                int py = pts[i][1];
+
+                // Shift outward or inward based on thickness
+                if (i < 4) px += t; else px -= t;
+
+                // Compute angle of this point
+                long dx = px - cx;
+                long dy = py - cy;
+                long ang = (atan2(dy, dx) * 180.0 / M_PI);
+                if (ang < 0) ang += 360;
+
+                // Draw only if the angle is within the arc range
+                if (ang >= start_angle && ang <= end_angle) {
+                    LCD_drawPixel(px, py, color);
+                }
+            }
+        }
+
+        // Bresenham update
+        if (d < 0) {
+            d += 2 * x + 3;
+        } else {
+            d += 2 * (x - y) + 5;
+            y--;
+        }
+        x++;
+    }
+}
+
+
 void LCD_drawArc(uint8_t cx, uint8_t cy, uint8_t r,
                       float start_angle, float end_angle,
                       uint8_t thickness, uint16_t color)
@@ -291,25 +372,53 @@ void LCD_drawArc(uint8_t cx, uint8_t cy, uint8_t r,
     }
 }
 
-void LCD_drawThickLine(short x0, short y0, short x1, short y1, uint8_t thickness, uint16_t color)
+void LCD_fillOval(int cx, int cy, int rx, int ry, uint16_t color)
 {
-    int dx = x1 - x0;
-    int dy = y1 - y0;
-    float length = sqrt(dx * dx + dy * dy);
+    long rx2 = (long)rx * rx;
+    long ry2 = (long)ry * ry;
+    long two_rx2 = 2 * rx2;
+    long two_ry2 = 2 * ry2;
 
-  
-    float ux = dx / length;
-    float uy = dy / length;
+    long x = 0;
+    long y = ry;
 
-   
-    float px = -uy;
-    float py = ux;
-    
-    for (int t = -thickness / 2; t <= thickness / 2; t++)
-    {
-        short offsetX = (short)(px * t);
-        short offsetY = (short)(py * t);
-        LCD_drawLine(x0 + offsetX, y0 + offsetY, x1 + offsetX, y1 + offsetY, color);
+    long px = 0;
+    long py = two_rx2 * y;
+
+    long d1 = ry2 - rx2 * ry + (rx2 / 4);
+
+    while (px < py) {
+        LCD_drawLine(cx - x, cy + y, cx + x, cy + y, color);
+        LCD_drawLine(cx - x, cy - y, cx + x, cy - y, color);
+
+        x++;
+        px += two_ry2;
+
+        if (d1 < 0) {
+            d1 += ry2 + px;
+        } else {
+            y--;
+            py -= two_rx2;
+            d1 += ry2 + px - py;
+        }
+    }
+
+    long d2 = ry2 * (x + 0.5)*(x + 0.5) + rx2 * (y - 1)*(y - 1) - rx2 * ry2;
+
+    while (y >= 0) {
+        LCD_drawLine(cx - x, cy + y, cx + x, cy + y, color);
+        LCD_drawLine(cx - x, cy - y, cx + x, cy - y, color);
+
+        y--;
+        py -= two_rx2;
+
+        if (d2 > 0) {
+            d2 += rx2 - py;
+        } else {
+            x++;
+            px += two_ry2;
+            d2 += rx2 - py + px;
+        }
     }
 }
 
