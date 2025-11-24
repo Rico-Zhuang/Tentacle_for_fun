@@ -90,8 +90,17 @@ void happy_frame(){
     LCD_drawArc_fast(cx+25, cy-10, 15, 180, 360, 4, BROWN); 
 
     //mouth
+    int rx = 38;     
+    int ry = 28;    
+    int y0 = cy + 16; 
+
+    for (int j = 0; j <= ry; j++)
+    {
+        int w = (int)(rx * sqrt(1.0 - ( (float)j*j / (float)(ry*ry) )));
+        LCD_drawLine(cx - w, y0 + j, cx + w, y0 + j, IVORY);
+    }
     LCD_drawThickLine(cx-38, cy+16, cx+38, cy+16, 2, BROWN);
-    LCD_drawArc(cx, cy+3, 40, 20, 160, 2, BROWN); 
+    LCD_drawArc(cx, cy+5, 40, 20, 160, 3, BROWN); 
     LCD_drawThickLine(cx-8, cy+18, cx-8, cy+42, 2, BROWN);//left two
     LCD_drawThickLine(cx+8, cy+18, cx+8, cy+42, 2, BROWN);//right two
     LCD_drawThickLine(cx-23, cy+18, cx-23, cy+34, 2, BROWN);//left one
@@ -209,7 +218,7 @@ int main(void)
     lcd_init();
     LCD_setScreen(WHITE);
     //angry_frame();
-    //happy_frame();
+    happy_frame();
     //sad_frame();
     //smile_frame();
 }

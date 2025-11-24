@@ -385,11 +385,9 @@ void LCD_fillOval(int cx, int cy, int rx, int ry, uint16_t color)
     long px = 0;
     long py = two_rx2 * y;
 
-    // -------- Region 1 --------
     long d1 = ry2 - rx2 * ry + (rx2 / 4);
 
     while (px < py) {
-        // 填1条横线：从(cx - x) 到 (cx + x)
         LCD_drawLine(cx - x, cy + y, cx + x, cy + y, color);
         LCD_drawLine(cx - x, cy - y, cx + x, cy - y, color);
 
@@ -405,11 +403,9 @@ void LCD_fillOval(int cx, int cy, int rx, int ry, uint16_t color)
         }
     }
 
-    // -------- Region 2 --------
     long d2 = ry2 * (x + 0.5)*(x + 0.5) + rx2 * (y - 1)*(y - 1) - rx2 * ry2;
 
     while (y >= 0) {
-        // 填1条横线
         LCD_drawLine(cx - x, cy + y, cx + x, cy + y, color);
         LCD_drawLine(cx - x, cy - y, cx + x, cy - y, color);
 
