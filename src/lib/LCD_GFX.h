@@ -22,6 +22,7 @@
 #define YELLOW    0xFFE0
 #define BROWN     0x79E0
 #define EYELLOW   0xFE00
+#define LIGHTBLUE 0x8D7B
 
 uint16_t rgb565(uint8_t red, uint8_t green, uint8_t blue);
 void LCD_drawPixel(uint8_t x, uint8_t y, uint16_t color);

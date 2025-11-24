@@ -118,6 +118,64 @@ void happy_frame(){
     }
 }
 
+void sad_frame(){
+    uint8_t cx = LCD_WIDTH / 2;
+    uint8_t cy = LCD_HEIGHT / 2;
+
+    //face
+    LCD_fillCircle(cx, cy, 55, EYELLOW);
+
+    //eyebrow
+
+    //eye
+    LCD_drawThickLine(cx-40, cy-15, cx-10, cy-15, 3, BROWN);
+    LCD_drawThickLine(cx+10, cy-15, cx+40, cy-15, 3, BROWN);
+
+    //eyebrow
+    LCD_drawThickLine(cx-40, cy-30, cx-10, cy-23, 4, BROWN);
+    LCD_drawThickLine(cx+10, cy-23, cx+40, cy-30, 4, BROWN);
+
+    //mouth
+    for (uint8_t  x=cx-2; x<cx+2; x++){
+        LCD_drawLine(x, cy, x, cy+20, BROWN);
+    }
+
+    //tear
+    LCD_drawBlock(cx-33, cy-13, cx-17, cy+43, LIGHTBLUE);
+    LCD_drawBlock(cx+17, cy-13, cx+33, cy+43, LIGHTBLUE);
+
+    while(1){
+        LCD_drawThickLine(cx-40, cy-30, cx-10, cy-23, 4, EYELLOW);
+        LCD_drawThickLine(cx+10, cy-23, cx+40, cy-30, 4, EYELLOW);
+        LCD_drawThickLine(cx-40, cy-15, cx-10, cy-15, 3, EYELLOW);
+        LCD_drawThickLine(cx+10, cy-15, cx+40, cy-15, 3, EYELLOW);
+        LCD_drawBlock(cx-33, cy-13, cx-17, cy+43, EYELLOW);
+        LCD_drawBlock(cx+17, cy-13, cx+33, cy+43, EYELLOW);
+        _delay_ms(1);
+        LCD_drawThickLine(cx-40, cy-38, cx-10, cy-31, 4, BROWN);
+        LCD_drawThickLine(cx+10, cy-31, cx+40, cy-38, 4, BROWN);
+        LCD_drawThickLine(cx-40, cy-23, cx-10, cy-23, 3, BROWN);
+        LCD_drawThickLine(cx+10, cy-23, cx+40, cy-23, 3, BROWN);
+        LCD_drawBlock(cx-33, cy-21, cx-17, cy+35, LIGHTBLUE);
+        LCD_drawBlock(cx+17, cy-21, cx+33, cy+35, LIGHTBLUE);
+        _delay_ms(500);
+        LCD_drawThickLine(cx-40, cy-38, cx-10, cy-31, 4, EYELLOW);
+        LCD_drawThickLine(cx+10, cy-31, cx+40, cy-38, 4, EYELLOW);
+        LCD_drawThickLine(cx-40, cy-23, cx-10, cy-23, 3, EYELLOW);
+        LCD_drawThickLine(cx+10, cy-23, cx+40, cy-23, 3, EYELLOW);
+        LCD_drawBlock(cx-33, cy-21, cx-17, cy+35, EYELLOW);
+        LCD_drawBlock(cx+17, cy-21, cx+33, cy+35, EYELLOW);
+        _delay_ms(1);
+        LCD_drawThickLine(cx-40, cy-30, cx-10, cy-23, 4, BROWN);
+        LCD_drawThickLine(cx+10, cy-23, cx+40, cy-30, 4, BROWN);
+        LCD_drawThickLine(cx-40, cy-15, cx-10, cy-15, 3, BROWN);
+        LCD_drawThickLine(cx+10, cy-15, cx+40, cy-15, 3, BROWN);
+        LCD_drawBlock(cx-33, cy-13, cx-17, cy+43, LIGHTBLUE);
+        LCD_drawBlock(cx+17, cy-13, cx+33, cy+43, LIGHTBLUE);
+        _delay_ms(500);
+    }
+
+}
 
 
 int main(void)
@@ -125,6 +183,6 @@ int main(void)
     lcd_init();
     LCD_setScreen(WHITE);
     //angry_frame();
-    happy_frame();
-  
+    //happy_frame();
+    sad_frame();
 }
