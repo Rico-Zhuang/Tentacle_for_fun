@@ -192,22 +192,37 @@ void smile_frame(){
         LCD_fillCircle(cx, cy, 55, EYELLOW);
 
         //eye
-        LCD_drawArc(cx-20, cy-10, 12, 180, 360, 3, BROWN); 
-        LCD_drawArc(cx+20, cy-10, 12, 180, 360, 3, BROWN); 
+        LCD_drawArc_fast(cx-20, cy-10, 12, 180, 360, 3, BROWN); 
+        LCD_drawArc_fast(cx+20, cy-10, 12, 180, 360, 3, BROWN); 
+        LCD_fillCircle(cx-21, cy-14, 7, BROWN);
+        LCD_fillCircle(cx+19, cy-14, 7, BROWN);
 
         //mouth
         LCD_drawArc_fast(cx, cy+18, 20, 20, 160, 3, BROWN); 
 
+        //flush
+        LCD_fillOval(cx-23, cy+5, 13, 5, PINK);
+        LCD_fillOval(cx+23, cy+5, 13, 5, PINK);
         while(1){
-            LCD_fillOval(cx-23, cy+5, 13, 5, PINK);
-            LCD_fillOval(cx+23, cy+5, 13, 5, PINK);
-            LCD_fillCircle(cx-20, cy-14, 7, BROWN);
-            LCD_fillCircle(cx+20, cy-14, 7, BROWN);
+            LCD_drawArc_fast(cx-20, cy-10, 12, 180, 360, 3, EYELLOW); 
+            LCD_drawArc_fast(cx+20, cy-10, 12, 180, 360, 3, EYELLOW); 
+            LCD_fillCircle(cx-21, cy-14, 7, EYELLOW);
+            LCD_fillCircle(cx+19, cy-14, 7, EYELLOW);
+            _delay_ms(1);
+            //LCD_fillCircle(cx-20, cy-14, 7, BROWN);
+            //LCD_fillCircle(cx+20, cy-14, 7, BROWN);
+            LCD_drawArc_fast(cx-20, cy-18, 12, 0, 180, 3, BROWN); 
+            LCD_drawArc_fast(cx+20, cy-18, 12, 0, 180, 3, BROWN); 
             _delay_ms(500);
-            LCD_fillOval(cx-23, cy+5, 13, 5, EYELLOW);
-            LCD_fillOval(cx+23, cy+5, 13, 5, EYELLOW);
-            LCD_fillCircle(cx-20, cy-14, 7, EYELLOW);
-            LCD_fillCircle(cx+20, cy-14, 7, EYELLOW);
+            //LCD_fillCircle(cx-20, cy-14, 7, EYELLOW);
+            //LCD_fillCircle(cx+20, cy-14, 7, EYELLOW);
+            LCD_drawArc_fast(cx-20, cy-18, 12, 0, 180, 3, EYELLOW); 
+            LCD_drawArc_fast(cx+20, cy-18, 12, 0, 180, 3, EYELLOW); 
+            _delay_ms(1);
+            LCD_drawArc_fast(cx-20, cy-10, 12, 180, 360, 3, BROWN); 
+            LCD_drawArc_fast(cx+20, cy-10, 12, 180, 360, 3, BROWN);
+            LCD_fillCircle(cx-21, cy-14, 7, BROWN);
+            LCD_fillCircle(cx+19, cy-14, 7, BROWN);
             _delay_ms(500);
         }
         
@@ -218,7 +233,7 @@ int main(void)
     lcd_init();
     LCD_setScreen(WHITE);
     //angry_frame();
-    happy_frame();
+    //happy_frame();
     //sad_frame();
-    //smile_frame();
+    smile_frame();
 }
