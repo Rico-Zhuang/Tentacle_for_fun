@@ -5,22 +5,30 @@
 //目前只有一个servo
 void servo_init() {
     MOTOR_1_DDR |= (1 << MOTOR_1_PIN);
+    MOTOR_2_DDR |= (1 << MOTOR_2_PIN);
+    MOTOR_3_DDR |= (1 << MOTOR_3_PIN);
 
     // 2. Configure Timer1 for Fast PWM (Mode 14)
     // In Mode 14, ICR1 determines the frequency (TOP), OCR1A determines duty cycle.
     
     // TCCR1A: Clear OC1A on Compare Match (Non-inverting mode) | WGM11
     TCCR1A = (1 << COM1A1) | (1 << WGM11);
+    TCCR3A = (1 << COM3A1) | (1 << WGM31);
+    TCCR4A = (1 << COM4A1) | (1 << WGM41);
     
     // TCCR1B: WGM13 | WGM12 | Prescaler 8 (CS11)
     // Prescaler 8 gives us 0.5us per tick at 16MHz.
     TCCR1B = (1 << WGM13) | (1 << WGM12) | (1 << CS11);
+    TCCR3B = (1 << WGM33) | (1 << WGM32) | (1 << CS31);
+    TCCR4B = (1 << WGM43) | (1 << WGM42) | (1 << CS41);
 
     // 3. Set PWM Frequency to 50Hz
     // Period = 20ms = 20,000us.
     // Ticks = 20,000us / 0.5us = 40,000 ticks.
     // Since counter assumes 0-index, we set TOP to 39999.
     ICR1 = 39999;
+    ICR3 = 39999;
+    ICR4 = 39999;
 }
 
 void servo_write(uint8_t angle) {
@@ -30,5 +38,25 @@ void servo_write(uint8_t angle) {
     // Formula: output = (input - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
     uint16_t pulse_width = ((uint32_t)angle * (SERVO_MAX - SERVO_MIN) / 180) + SERVO_MIN;
     
-    OCR1A = pulse_width;
+    MOTOR_1_OCR = pulse_width;
+}
+
+void servo2_write(uint8_t angle) {
+    if (angle > 180) angle = 180;
+    
+    // Map angle (0-180) to pulse width (SERVO_MIN - SERVO_MAX)
+    // Formula: output = (input - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+    uint16_t pulse_width = ((uint32_t)angle * (SERVO_MAX - SERVO_MIN) / 180) + SERVO_MIN;
+    
+    MOTOR_2_OCR = pulse_width;
+}
+
+void servo3_write(uint8_t angle) {
+    if (angle > 180) angle = 180;
+    
+    // Map angle (0-180) to pulse width (SERVO_MIN - SERVO_MAX)
+    // Formula: output = (input - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+    uint16_t pulse_width = ((uint32_t)angle * (SERVO_MAX - SERVO_MIN) / 180) + SERVO_MIN;
+    
+    MOTOR_3_OCR = pulse_width;
 }
