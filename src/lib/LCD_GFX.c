@@ -352,9 +352,6 @@ void LCD_drawArc_fast(uint8_t cx, uint8_t cy, uint8_t r,
 }
 
 
-
-
-
 void LCD_drawArc(uint8_t cx, uint8_t cy, uint8_t r,
                       float start_angle, float end_angle,
                       uint8_t thickness, uint16_t color)
@@ -374,3 +371,58 @@ void LCD_drawArc(uint8_t cx, uint8_t cy, uint8_t r,
         }
     }
 }
+
+void LCD_fillOval(int cx, int cy, int rx, int ry, uint16_t color)
+{
+    long rx2 = (long)rx * rx;
+    long ry2 = (long)ry * ry;
+    long two_rx2 = 2 * rx2;
+    long two_ry2 = 2 * ry2;
+
+    long x = 0;
+    long y = ry;
+
+    long px = 0;
+    long py = two_rx2 * y;
+
+    // -------- Region 1 --------
+    long d1 = ry2 - rx2 * ry + (rx2 / 4);
+
+    while (px < py) {
+        // 填1条横线：从(cx - x) 到 (cx + x)
+        LCD_drawLine(cx - x, cy + y, cx + x, cy + y, color);
+        LCD_drawLine(cx - x, cy - y, cx + x, cy - y, color);
+
+        x++;
+        px += two_ry2;
+
+        if (d1 < 0) {
+            d1 += ry2 + px;
+        } else {
+            y--;
+            py -= two_rx2;
+            d1 += ry2 + px - py;
+        }
+    }
+
+    // -------- Region 2 --------
+    long d2 = ry2 * (x + 0.5)*(x + 0.5) + rx2 * (y - 1)*(y - 1) - rx2 * ry2;
+
+    while (y >= 0) {
+        // 填1条横线
+        LCD_drawLine(cx - x, cy + y, cx + x, cy + y, color);
+        LCD_drawLine(cx - x, cy - y, cx + x, cy - y, color);
+
+        y--;
+        py -= two_rx2;
+
+        if (d2 > 0) {
+            d2 += rx2 - py;
+        } else {
+            x++;
+            px += two_ry2;
+            d2 += rx2 - py + px;
+        }
+    }
+}
+

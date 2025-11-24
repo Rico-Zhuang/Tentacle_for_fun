@@ -23,6 +23,7 @@
 #define BROWN     0x79E0
 #define EYELLOW   0xFE00
 #define LIGHTBLUE 0x8D7B
+#define PINK      0xFC88
 
 uint16_t rgb565(uint8_t red, uint8_t green, uint8_t blue);
 void LCD_drawPixel(uint8_t x, uint8_t y, uint16_t color);
@@ -43,4 +44,5 @@ void LCD_drawThickLine(short x0, short y0, short x1, short y1, uint8_t thickness
 void LCD_drawArc(uint8_t cx, uint8_t cy, uint8_t r,
                       float start_angle, float end_angle,
                       uint8_t thickness, uint16_t color);
+void LCD_fillOval(int cx, int cy, int rx, int ry, uint16_t color);
 #endif /* LCD_GFX_H_ */

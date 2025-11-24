@@ -125,8 +125,6 @@ void sad_frame(){
     //face
     LCD_fillCircle(cx, cy, 55, EYELLOW);
 
-    //eyebrow
-
     //eye
     LCD_drawThickLine(cx-40, cy-15, cx-10, cy-15, 3, BROWN);
     LCD_drawThickLine(cx+10, cy-15, cx+40, cy-15, 3, BROWN);
@@ -177,6 +175,34 @@ void sad_frame(){
 
 }
 
+void smile_frame(){
+        uint8_t cx = LCD_WIDTH / 2;
+        uint8_t cy = LCD_HEIGHT / 2;
+
+        //face
+        LCD_fillCircle(cx, cy, 55, EYELLOW);
+
+        //eye
+        LCD_drawArc(cx-20, cy-10, 12, 180, 360, 3, BROWN); 
+        LCD_drawArc(cx+20, cy-10, 12, 180, 360, 3, BROWN); 
+
+        //mouth
+        LCD_drawArc_fast(cx, cy+18, 20, 20, 160, 3, BROWN); 
+
+        while(1){
+            LCD_fillOval(cx-23, cy+5, 13, 5, PINK);
+            LCD_fillOval(cx+23, cy+5, 13, 5, PINK);
+            LCD_fillCircle(cx-20, cy-14, 7, BROWN);
+            LCD_fillCircle(cx+20, cy-14, 7, BROWN);
+            _delay_ms(500);
+            LCD_fillOval(cx-23, cy+5, 13, 5, EYELLOW);
+            LCD_fillOval(cx+23, cy+5, 13, 5, EYELLOW);
+            LCD_fillCircle(cx-20, cy-14, 7, EYELLOW);
+            LCD_fillCircle(cx+20, cy-14, 7, EYELLOW);
+            _delay_ms(500);
+        }
+        
+}
 
 int main(void)
 {
@@ -184,5 +210,6 @@ int main(void)
     LCD_setScreen(WHITE);
     //angry_frame();
     //happy_frame();
-    sad_frame();
+    //sad_frame();
+    //smile_frame();
 }
