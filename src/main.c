@@ -209,13 +209,9 @@ void smile_frame(){
             LCD_fillCircle(cx-21, cy-14, 7, EYELLOW);
             LCD_fillCircle(cx+19, cy-14, 7, EYELLOW);
             _delay_ms(1);
-            //LCD_fillCircle(cx-20, cy-14, 7, BROWN);
-            //LCD_fillCircle(cx+20, cy-14, 7, BROWN);
             LCD_drawArc_fast(cx-20, cy-18, 12, 0, 180, 3, BROWN); 
             LCD_drawArc_fast(cx+20, cy-18, 12, 0, 180, 3, BROWN); 
             _delay_ms(500);
-            //LCD_fillCircle(cx-20, cy-14, 7, EYELLOW);
-            //LCD_fillCircle(cx+20, cy-14, 7, EYELLOW);
             LCD_drawArc_fast(cx-20, cy-18, 12, 0, 180, 3, EYELLOW); 
             LCD_drawArc_fast(cx+20, cy-18, 12, 0, 180, 3, EYELLOW); 
             _delay_ms(1);
