@@ -1,5 +1,8 @@
 #include "lib/ST7735.h"
 #include "lib/LCD_GFX.h"
+#include <avr/io.h>
+#include <avr/sleep.h>
+#include <util/delay.h>
 
 void angry_frame(){
     uint8_t cx = LCD_WIDTH / 2;
@@ -184,7 +187,7 @@ void smile_frame(){
             _delay_ms(1);
             LCD_drawArc_fast(cx-20, cy-18, 12, 0, 180, 3, BROWN); 
             LCD_drawArc_fast(cx+20, cy-18, 12, 0, 180, 3, BROWN); 
-            _delay_ms(500);
+            _delay_ms(50);
             LCD_drawArc_fast(cx-20, cy-18, 12, 0, 180, 3, EYELLOW); 
             LCD_drawArc_fast(cx+20, cy-18, 12, 0, 180, 3, EYELLOW); 
             _delay_ms(1);
@@ -192,7 +195,7 @@ void smile_frame(){
             LCD_drawArc_fast(cx+20, cy-10, 12, 180, 360, 3, BROWN);
             LCD_fillCircle(cx-21, cy-14, 7, BROWN);
             LCD_fillCircle(cx+19, cy-14, 7, BROWN);
-            _delay_ms(500);
+            _delay_ms(700);
         }
         
 }
