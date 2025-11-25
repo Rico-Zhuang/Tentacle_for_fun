@@ -7,6 +7,8 @@
 #ifndef EMOJI_C
 #define EMOJI_H
 
+//uint8_t EMOJI_STATE=0;
+
 void angry_frame();
 void happy_frame();
 void sad_frame();
