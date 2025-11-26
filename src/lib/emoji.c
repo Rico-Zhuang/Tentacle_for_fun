@@ -5,88 +5,89 @@
 #include <util/delay.h>
 #include "lib/emoji.h"
 
+
 void angry_frame(){
-    uint8_t cx = LCD_WIDTH / 2;
-    uint8_t cy = LCD_HEIGHT / 2;
+  
+    if (angry_state==0){
+        //face
+        LCD_fillCircle(cx, cy, 55, RED);
 
-    //face
-    LCD_fillCircle(cx, cy, 55, RED);
+        //eye
+        LCD_fillCircle(cx-25, cy-10, 16, WHITE);
+        LCD_fillCircle(cx+25, cy-10, 16, WHITE);
+        LCD_fillCircle(cx-19, cy-10, 10, BLACK);
+        LCD_fillCircle(cx+31, cy-10, 10, BLACK);
+        
+        //left eyebrow
+        LCD_drawThickLine(cx-32, cy-44, cx-12, cy-34, 4, BROWN);
 
-    //eye
-    LCD_fillCircle(cx-25, cy-10, 16, WHITE);
-    LCD_fillCircle(cx+25, cy-10, 16, WHITE);
-    LCD_fillCircle(cx-19, cy-10, 10, BLACK);
-    LCD_fillCircle(cx+31, cy-10, 10, BLACK);
-    
-    //left eyebrow
-    LCD_drawThickLine(cx-32, cy-44, cx-12, cy-34, 4, BROWN);
+        //right eyebrow
+        LCD_drawThickLine(cx+14, cy-34, cx+32, cy-44, 4, BROWN);
 
-    //right eyebrow
-    LCD_drawThickLine(cx+14, cy-34, cx+32, cy-44, 4, BROWN);
-
-    //mouth
-    LCD_drawArc(cx, cy+50, 30, -120, -40, 3, BROWN); 
+        //mouth
+        LCD_drawArc(cx, cy+50, 30, -120, -40, 3, BROWN); 
+    }
    
     LCD_drawThickLine(cx-32, cy-44, cx-12, cy-34, 4, RED);
     LCD_drawThickLine(cx+14, cy-34, cx+32, cy-44, 4, RED);
-    LCD_fillCircle(cx-31, cy-10, 10, WHITE);
-    LCD_fillCircle(cx+19, cy-10, 10, WHITE);
+    LCD_fillCircle(cx-19, cy-10, 10, WHITE);
+    LCD_fillCircle(cx+31, cy-10, 10, WHITE);
     _delay_ms(1);
     LCD_drawArc(cx-20, cy-60, 30, 90, 125, 3, BROWN); 
     LCD_drawArc(cx-25, cy-50, 20, 30, 90, 3, BROWN);
     LCD_drawArc(cx+23, cy-50, 20, 90, 125, 3, BROWN); 
     LCD_drawArc(cx+23, cy-70, 40, 60, 90, 3, BROWN); 
-    LCD_fillCircle(cx-19, cy-10, 10, BLACK);
-    LCD_fillCircle(cx+31, cy-10, 10, BLACK);
+    LCD_fillCircle(cx+19, cy-10, 10, BLACK);
+    LCD_fillCircle(cx-31, cy-10, 10, BLACK);
     _delay_ms(70);
     LCD_drawArc(cx-20, cy-60, 30, 90, 125, 3, RED); 
     LCD_drawArc(cx-25, cy-50, 20, 30, 90, 3, RED);
     LCD_drawArc(cx+23, cy-50, 20, 90, 125, 3, RED); 
     LCD_drawArc(cx+23, cy-70, 40, 60, 90, 3, RED); 
-    LCD_fillCircle(cx-19, cy-10, 10, WHITE);
-    LCD_fillCircle(cx+31, cy-10, 10, WHITE);
+    LCD_fillCircle(cx+19, cy-10, 10, WHITE);
+    LCD_fillCircle(cx-31, cy-10, 10, WHITE);
     _delay_ms(1);
     LCD_drawThickLine(cx-32, cy-44, cx-12, cy-34, 4, BROWN);
     LCD_drawThickLine(cx+14, cy-34, cx+32, cy-44, 4, BROWN);
-    LCD_fillCircle(cx-31, cy-10, 10, BLACK);
-    LCD_fillCircle(cx+19, cy-10, 10, BLACK);
+    LCD_fillCircle(cx-19, cy-10, 10, BLACK);
+    LCD_fillCircle(cx+31, cy-10, 10, BLACK);
 
-    
 }
 
 void happy_frame(){
-    uint8_t cx = LCD_WIDTH / 2;
-    uint8_t cy = LCD_HEIGHT / 2;
+  
+    if(happy_state==0){
+            //face
+        LCD_fillCircle(cx, cy, 55, EYELLOW);
 
-    //face
-    LCD_fillCircle(cx, cy, 55, EYELLOW);
+        //eye
+        LCD_drawArc_fast(cx-25, cy-10, 15, 180, 360, 4, BROWN); 
+        LCD_drawArc_fast(cx+25, cy-10, 15, 180, 360, 4, BROWN); 
 
-    //eye
-    LCD_drawArc_fast(cx-25, cy-10, 15, 180, 360, 4, BROWN); 
-    LCD_drawArc_fast(cx+25, cy-10, 15, 180, 360, 4, BROWN); 
+        //mouth
+        int rx = 38;     
+        int ry = 28;    
+        int y0 = cy + 16; 
 
-    //mouth
-    int rx = 38;     
-    int ry = 28;    
-    int y0 = cy + 16; 
-
-    for (int j = 0; j <= ry; j++)
-    {
-        int w = (int)(rx * sqrt(1.0 - ( (float)j*j / (float)(ry*ry) )));
-        LCD_drawLine(cx - w, y0 + j, cx + w, y0 + j, IVORY);
+        for (int j = 0; j <= ry; j++)
+        {
+            int w = (int)(rx * sqrt(1.0 - ( (float)j*j / (float)(ry*ry) )));
+            LCD_drawLine(cx - w, y0 + j, cx + w, y0 + j, IVORY);
+        }
+        LCD_drawThickLine(cx-38, cy+16, cx+38, cy+16, 2, BROWN);
+        LCD_drawArc(cx, cy+5, 40, 20, 160, 3, BROWN); 
+        LCD_drawThickLine(cx-8, cy+18, cx-8, cy+42, 2, BROWN);//left two
+        LCD_drawThickLine(cx+8, cy+18, cx+8, cy+42, 2, BROWN);//right two
+        LCD_drawThickLine(cx-23, cy+18, cx-23, cy+34, 2, BROWN);//left one
+        LCD_drawThickLine(cx+23, cy+18, cx+23, cy+34, 2, BROWN);//right one
+        
+        //eyebrow
+        LCD_drawArc(cx-35, cy-40, 10, 180, 320, 3, BROWN); //white
+        LCD_drawArc(cx-35, cy-40, 10, 320, 360, 3, BROWN); //yellow
+        LCD_drawArc(cx+35, cy-40, 10, 180, 220, 3, BROWN); //yellow
+        LCD_drawArc(cx+35, cy-40, 10, 220, 360, 3, BROWN); //white
     }
-    LCD_drawThickLine(cx-38, cy+16, cx+38, cy+16, 2, BROWN);
-    LCD_drawArc(cx, cy+5, 40, 20, 160, 3, BROWN); 
-    LCD_drawThickLine(cx-8, cy+18, cx-8, cy+42, 2, BROWN);//left two
-    LCD_drawThickLine(cx+8, cy+18, cx+8, cy+42, 2, BROWN);//right two
-    LCD_drawThickLine(cx-23, cy+18, cx-23, cy+34, 2, BROWN);//left one
-    LCD_drawThickLine(cx+23, cy+18, cx+23, cy+34, 2, BROWN);//right one
-    
-    //eyebrow
-    LCD_drawArc(cx-35, cy-40, 10, 180, 320, 3, BROWN); //white
-    LCD_drawArc(cx-35, cy-40, 10, 320, 360, 3, BROWN); //yellow
-    LCD_drawArc(cx+35, cy-40, 10, 180, 220, 3, BROWN); //yellow
-    LCD_drawArc(cx+35, cy-40, 10, 220, 360, 3, BROWN); //white
+   
     
     LCD_drawBlock(cx-44, cy-30, cx+44, cy+5, EYELLOW);
      _delay_ms(1);
@@ -100,29 +101,31 @@ void happy_frame(){
 }
 
 void sad_frame(){
-    uint8_t cx = LCD_WIDTH / 2;
-    uint8_t cy = LCD_HEIGHT / 2;
+   
 
-    //face
-    LCD_fillCircle(cx, cy, 55, EYELLOW);
+    if(sad_state==0){
+        //face
+        LCD_fillCircle(cx, cy, 55, EYELLOW);
 
-    //eye
-    LCD_drawThickLine(cx-40, cy-15, cx-10, cy-15, 3, BROWN);
-    LCD_drawThickLine(cx+10, cy-15, cx+40, cy-15, 3, BROWN);
+        //eye
+        LCD_drawThickLine(cx-40, cy-15, cx-10, cy-15, 3, BROWN);
+        LCD_drawThickLine(cx+10, cy-15, cx+40, cy-15, 3, BROWN);
 
-    //eyebrow
-    LCD_drawThickLine(cx-40, cy-30, cx-10, cy-23, 4, BROWN);
-    LCD_drawThickLine(cx+10, cy-23, cx+40, cy-30, 4, BROWN);
+        //eyebrow
+        LCD_drawThickLine(cx-40, cy-30, cx-10, cy-23, 4, BROWN);
+        LCD_drawThickLine(cx+10, cy-23, cx+40, cy-30, 4, BROWN);
 
-    //mouth
-    for (uint8_t  x=cx-2; x<cx+2; x++){
-        LCD_drawLine(x, cy, x, cy+20, BROWN);
+        //mouth
+        for (uint8_t  x=cx-2; x<cx+2; x++){
+            LCD_drawLine(x, cy, x, cy+20, BROWN);
+        }
+
+       
     }
-
-    //tear
+   
+     //tear
     LCD_drawBlock(cx-33, cy-13, cx-17, cy+43, LIGHTBLUE);
-    LCD_drawBlock(cx+17, cy-13, cx+33, cy+43, LIGHTBLUE);
-
+    LCD_drawBlock(cx+17, cy-13, cx+33, cy+43, LIGHTBLUE);  
     LCD_drawThickLine(cx-40, cy-30, cx-10, cy-23, 4, EYELLOW);
     LCD_drawThickLine(cx+10, cy-23, cx+40, cy-30, 4, EYELLOW);
     LCD_drawThickLine(cx-40, cy-15, cx-10, cy-15, 3, EYELLOW);
@@ -153,24 +156,24 @@ void sad_frame(){
 }
 
 void smile_frame(){
-        uint8_t cx = LCD_WIDTH / 2;
-        uint8_t cy = LCD_HEIGHT / 2;
+       
+        if (smile_state==0){
+            //face
+            LCD_fillCircle(cx, cy, 55, EYELLOW);
 
-        //face
-        LCD_fillCircle(cx, cy, 55, EYELLOW);
+            //eye
+            LCD_drawArc_fast(cx-20, cy-10, 12, 180, 360, 3, BROWN); 
+            LCD_drawArc_fast(cx+20, cy-10, 12, 180, 360, 3, BROWN); 
+            LCD_fillCircle(cx-21, cy-14, 7, BROWN);
+            LCD_fillCircle(cx+19, cy-14, 7, BROWN);
 
-        //eye
-        LCD_drawArc_fast(cx-20, cy-10, 12, 180, 360, 3, BROWN); 
-        LCD_drawArc_fast(cx+20, cy-10, 12, 180, 360, 3, BROWN); 
-        LCD_fillCircle(cx-21, cy-14, 7, BROWN);
-        LCD_fillCircle(cx+19, cy-14, 7, BROWN);
+            //mouth
+            LCD_drawArc_fast(cx, cy+18, 20, 20, 160, 3, BROWN); 
 
-        //mouth
-        LCD_drawArc_fast(cx, cy+18, 20, 20, 160, 3, BROWN); 
-
-        //flush
-        LCD_fillOval(cx-23, cy+5, 13, 5, PINK);
-        LCD_fillOval(cx+23, cy+5, 13, 5, PINK);
+            //flush
+            LCD_fillOval(cx-23, cy+5, 13, 5, PINK);
+            LCD_fillOval(cx+23, cy+5, 13, 5, PINK);
+        }
     
         LCD_drawArc_fast(cx-20, cy-10, 12, 180, 360, 3, EYELLOW); 
         LCD_drawArc_fast(cx+20, cy-10, 12, 180, 360, 3, EYELLOW); 
@@ -187,6 +190,4 @@ void smile_frame(){
         LCD_drawArc_fast(cx+20, cy-10, 12, 180, 360, 3, BROWN);
         LCD_fillCircle(cx-21, cy-14, 7, BROWN);
         LCD_fillCircle(cx+19, cy-14, 7, BROWN);
-    
-        
 }

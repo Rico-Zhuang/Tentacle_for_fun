@@ -3,7 +3,7 @@
 
 
 
-void UART_init(int BAUD_PRESCALER)
+void UART_init(int prescale)
 {
 
     /*Set baud rate */
