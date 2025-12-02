@@ -13,6 +13,7 @@
 double magnitude;
 uint8_t cx = LCD_WIDTH / 2;
 uint8_t cy = LCD_HEIGHT / 2;
+uint8_t angry_mode = 0;
 
 void set_emoji_state(uint8_t happy, uint8_t smile, uint8_t angry, uint8_t sad)
 {
@@ -52,6 +53,7 @@ ISR(TIMER1_COMPA_vect) {
 
 int main(void) {
     //char buf[50];
+    angry_mode = 0;
     UART_init(BAUD_PRESCALER);
 
     ultrasonic_init();
@@ -69,11 +71,7 @@ int main(void) {
     SetServoAngle(0, 0);
     SetServoAngle(1, 0);
     SetServoAngle(2, 0);
-    // smile_state=0;
-    // angry_state=0;
-    // happy_state=0;  
-    // sad_state=0;
-    
+
      while (1) {
         SpeedLevel lvl = ultrasonic_get_speed_nonblocking();
 
@@ -81,6 +79,7 @@ int main(void) {
             case SPEED_FAST:
                 angry_frame();
                 set_emoji_state(0,0,1,0);
+                angry_mode = 1;
                 break;
             case SPEED_SLOW:
                 happy_frame();
@@ -90,6 +89,7 @@ int main(void) {
             case SPEED_NONE:
                 smile_frame();
                 set_emoji_state(0,1,0,0);
+                angry_mode = 0;
                 break;
 
             case SPEED_BACK:

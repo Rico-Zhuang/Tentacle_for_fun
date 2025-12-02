@@ -26,6 +26,9 @@ volatile uint8_t  echo_captured    = 0;
 volatile float current_distance_cm = 0.0f;
 static float last_valid_distance = 0.0f;
 
+extern uint8_t angry_mode;
+
+
 
 //static float dist_lpf = 0;     
 
@@ -154,10 +157,13 @@ float ultrasonic_get_distance(void)
 
 SpeedLevel ultrasonic_get_speed_nonblocking(void)
 {
+    
     const float dt = 0.30f;  // 300ms
 
     static float  last_distance = 0.0f;
     static uint8_t first = 1;
+
+
 
     if (!measuring && echo_captured) {
         echo_captured = 0;  // 标记这次数据已经被消费
@@ -200,6 +206,9 @@ SpeedLevel ultrasonic_get_speed_nonblocking(void)
 
         // ===== 3) 根据速度分类 =====
         if (speed < -5.0f && speed > -15.0f) {
+            if (angry_mode==1) {
+                return SPEED_NONE;   // angry 时忽略 slow
+            }
             return SPEED_SLOW;
         } else if (speed <= -15.0f) {
             return SPEED_FAST;
