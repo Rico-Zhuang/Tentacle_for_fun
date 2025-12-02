@@ -69,10 +69,10 @@ int main(void) {
     SetServoAngle(0, 0);
     SetServoAngle(1, 0);
     SetServoAngle(2, 0);
-    smile_state=0;
-    angry_state=0;
-    happy_state=0;  
-    sad_state=0;
+    // smile_state=0;
+    // angry_state=0;
+    // happy_state=0;  
+    // sad_state=0;
     
      while (1) {
         SpeedLevel lvl = ultrasonic_get_speed_nonblocking();
@@ -81,22 +81,15 @@ int main(void) {
             case SPEED_FAST:
                 angry_frame();
                 set_emoji_state(0,0,1,0);
-                // LCD_drawArc(cx-35, cy-40, 10, 180, 320, 3, WHITE);
-                // LCD_drawArc(cx+35, cy-40, 10, 220, 360, 3, WHITE);
                 break;
-
             case SPEED_SLOW:
                 happy_frame();
                 set_emoji_state(1,0,0,0);
-                // LCD_drawArc(cx-35, cy-40, 10, 180, 320, 3, WHITE);
-                // LCD_drawArc(cx+35, cy-40, 10, 220, 360, 3, WHITE);
                 break;
 
             case SPEED_NONE:
                 smile_frame();
                 set_emoji_state(0,1,0,0);
-                // LCD_drawArc(cx-35, cy-40, 10, 180, 320, 3, WHITE);
-                // LCD_drawArc(cx+35, cy-40, 10, 220, 360, 3, WHITE);
                 break;
 
             case SPEED_BACK:

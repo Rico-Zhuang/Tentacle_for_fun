@@ -27,41 +27,7 @@ volatile float current_distance_cm = 0.0f;
 static float last_valid_distance = 0.0f;
 
 
-// ---- Filter buffers ----
-static float dist_buf[3] = {0,0,0};
-static uint8_t dist_idx = 0;
-static float dist_lpf = 0;      // low-pass filtered distance
-
-
-// =========================================================
-//  中值滤波（Median of 3）
-// // =========================================================
-// static float median3(float a, float b, float c)
-// {
-//     float m;
-
-//     if ((a>=b && a<=c) || (a>=c && a<=b)) m = a;
-//     else if ((b>=a && b<=c) || (b>=c && b<=a)) m = b;
-//     else m = c;
-
-//     return m;
-// }
-
-
-// // =========================================================
-// //  UART 打印 float
-// // =========================================================
-// void UART_print_float(float x)
-// {
-//     char buf[20];
-//     int i = (int)x;
-//     int d = (int)((x - i) * 100);
-
-//     if (d < 0) d = -d;
-
-//     sprintf(buf, "%d.%02d", i, d);
-//     UART_putstring(buf);
-// }
+//static float dist_lpf = 0;     
 
 ISR(INT1_vect)
 {
@@ -172,7 +138,7 @@ void ultrasonic_init(void)
     EIMSK |= (1<<INT1);
 
     current_distance_cm = 0;
-    dist_lpf = 0;
+    //dist_lpf = 0;
 
     ultrasonic_start_measurement();
 }
@@ -229,7 +195,7 @@ SpeedLevel ultrasonic_get_speed_nonblocking(void)
         // UART_putstring(" cm/s\r\n");
 
         // 开启下一次测量
-        _delay_ms(400); 
+        _delay_ms(300); 
         ultrasonic_start_measurement();
 
         // ===== 3) 根据速度分类 =====
