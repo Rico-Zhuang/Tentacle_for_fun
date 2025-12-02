@@ -59,9 +59,10 @@ void angry_frame(){
 void happy_frame(){
   
     if(happy_state==0){
-        LCD_drawArc(cx-35, cy-40, 10, 180, 320, 3, WHITE); //white
-        LCD_drawArc(cx+35, cy-40, 10, 220, 360, 3, WHITE); //white
-            //face
+        // LCD_drawArc(cx-35, cy-40, 10, 180, 320, 3, WHITE); //white
+        // LCD_drawArc(cx+35, cy-40, 10, 220, 360, 3, WHITE); //white
+        
+        //face
         LCD_fillCircle(cx, cy, 55, EYELLOW);
 
         //eye
@@ -86,10 +87,10 @@ void happy_frame(){
         LCD_drawThickLine(cx+23, cy+18, cx+23, cy+34, 2, BROWN);//right one
         
         //eyebrow
-        LCD_drawArc(cx-35, cy-40, 10, 180, 320, 3, BROWN); //white
-        LCD_drawArc(cx-35, cy-40, 10, 320, 360, 3, BROWN); //yellow
-        LCD_drawArc(cx+35, cy-40, 10, 180, 220, 3, BROWN); //yellow
-        LCD_drawArc(cx+35, cy-40, 10, 220, 360, 3, BROWN); //white
+        // LCD_drawArc(cx-35, cy-40, 10, 180, 320, 3, BROWN); //white
+        // LCD_drawArc(cx-35, cy-40, 10, 320, 360, 3, BROWN); //yellow
+        // LCD_drawArc(cx+35, cy-40, 10, 180, 220, 3, BROWN); //yellow
+        // LCD_drawArc(cx+35, cy-40, 10, 220, 360, 3, BROWN); //white
     }
    
     

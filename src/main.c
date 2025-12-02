@@ -14,6 +14,14 @@ double magnitude;
 uint8_t cx = LCD_WIDTH / 2;
 uint8_t cy = LCD_HEIGHT / 2;
 
+void set_emoji_state(uint8_t happy, uint8_t smile, uint8_t angry, uint8_t sad)
+{
+    happy_state = happy;
+    smile_state = smile;
+    angry_state = angry;
+    sad_state   = sad;
+}
+
 ISR(TIMER1_COMPA_vect) {
     // 1. 读取传感器
     int raw_x = ADC_Read(0);
@@ -67,53 +75,35 @@ int main(void) {
     sad_state=0;
     
      while (1) {
-        // 非阻塞获取速度等级（内部自动管理测距）
         SpeedLevel lvl = ultrasonic_get_speed_nonblocking();
 
         switch (lvl) {
             case SPEED_FAST:
                 angry_frame();
-                angry_state = 1;
-                smile_state = 0;
-                happy_state = 0;
-                sad_state   = 0;
-                LCD_drawArc(cx-35, cy-40, 10, 180, 320, 3, WHITE);
-                LCD_drawArc(cx+35, cy-40, 10, 220, 360, 3, WHITE);
+                set_emoji_state(0,0,1,0);
+                // LCD_drawArc(cx-35, cy-40, 10, 180, 320, 3, WHITE);
+                // LCD_drawArc(cx+35, cy-40, 10, 220, 360, 3, WHITE);
                 break;
 
             case SPEED_SLOW:
                 happy_frame();
-                happy_state = 1;
-                smile_state = 0;
-                angry_state = 0;
-                sad_state   = 0;
-
-                LCD_drawArc(cx-35, cy-40, 10, 180, 320, 3, WHITE);
-                LCD_drawArc(cx+35, cy-40, 10, 220, 360, 3, WHITE);
+                set_emoji_state(1,0,0,0);
+                // LCD_drawArc(cx-35, cy-40, 10, 180, 320, 3, WHITE);
+                // LCD_drawArc(cx+35, cy-40, 10, 220, 360, 3, WHITE);
                 break;
 
             case SPEED_NONE:
                 smile_frame();
-                sad_state   = 0;
-                smile_state = 1;
-                angry_state = 0;
-                happy_state = 0;
-
-                LCD_drawArc(cx-35, cy-40, 10, 180, 320, 3, WHITE);
-                LCD_drawArc(cx+35, cy-40, 10, 220, 360, 3, WHITE);
+                set_emoji_state(0,1,0,0);
+                // LCD_drawArc(cx-35, cy-40, 10, 180, 320, 3, WHITE);
+                // LCD_drawArc(cx+35, cy-40, 10, 220, 360, 3, WHITE);
                 break;
 
             case SPEED_BACK:
                 sad_frame();
-                happy_state = 0;
-                smile_state = 0;
-                angry_state = 0;
-                sad_state   = 1;
+                set_emoji_state(0,0,0,1);
                 break;
-
         }
     }
-
-    // 理论上不会到这里
     return 0;
 }

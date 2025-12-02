@@ -35,33 +35,33 @@ static float dist_lpf = 0;      // low-pass filtered distance
 
 // =========================================================
 //  中值滤波（Median of 3）
-// =========================================================
-static float median3(float a, float b, float c)
-{
-    float m;
+// // =========================================================
+// static float median3(float a, float b, float c)
+// {
+//     float m;
 
-    if ((a>=b && a<=c) || (a>=c && a<=b)) m = a;
-    else if ((b>=a && b<=c) || (b>=c && b<=a)) m = b;
-    else m = c;
+//     if ((a>=b && a<=c) || (a>=c && a<=b)) m = a;
+//     else if ((b>=a && b<=c) || (b>=c && b<=a)) m = b;
+//     else m = c;
 
-    return m;
-}
+//     return m;
+// }
 
 
-// =========================================================
-//  UART 打印 float
-// =========================================================
-void UART_print_float(float x)
-{
-    char buf[20];
-    int i = (int)x;
-    int d = (int)((x - i) * 100);
+// // =========================================================
+// //  UART 打印 float
+// // =========================================================
+// void UART_print_float(float x)
+// {
+//     char buf[20];
+//     int i = (int)x;
+//     int d = (int)((x - i) * 100);
 
-    if (d < 0) d = -d;
+//     if (d < 0) d = -d;
 
-    sprintf(buf, "%d.%02d", i, d);
-    UART_putstring(buf);
-}
+//     sprintf(buf, "%d.%02d", i, d);
+//     UART_putstring(buf);
+// }
 
 ISR(INT1_vect)
 {
@@ -223,13 +223,13 @@ SpeedLevel ultrasonic_get_speed_nonblocking(void)
 
         last_distance = d;
 
-        // Debug 输出（如果不想要可以注释）
-        UART_putstring("Speed = ");
-        UART_print_float(speed);
-        UART_putstring(" cm/s\r\n");
+        // // Debug 输出（如果不想要可以注释）
+        // UART_putstring("Speed = ");
+        // UART_print_float(speed);
+        // UART_putstring(" cm/s\r\n");
 
         // 开启下一次测量
-        _delay_ms(500); 
+        _delay_ms(400); 
         ultrasonic_start_measurement();
 
         // ===== 3) 根据速度分类 =====
