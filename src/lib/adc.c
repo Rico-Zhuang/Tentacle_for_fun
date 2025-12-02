@@ -10,9 +10,9 @@
 #include <avr/interrupt.h> 
 #include <util/delay.h>
 #include <math.h>
-#include "PCA9685.h"
-#include "tentacle.h"
-#include "ADC.h"
+#include "./lib/PCA9685.h"
+#include "./lib/tentacle.h"
+#include "./lib/adc.h"
 
 #define PI 3.14159265
 

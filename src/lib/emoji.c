@@ -9,6 +9,8 @@
 void angry_frame(){
   
     if (angry_state==0){
+        LCD_drawArc(cx-35, cy-40, 10, 180, 320, 3, WHITE); //white
+        LCD_drawArc(cx+35, cy-40, 10, 220, 360, 3, WHITE); //white
         //face
         LCD_fillCircle(cx, cy, 55, RED);
 
@@ -57,6 +59,8 @@ void angry_frame(){
 void happy_frame(){
   
     if(happy_state==0){
+        LCD_drawArc(cx-35, cy-40, 10, 180, 320, 3, WHITE); //white
+        LCD_drawArc(cx+35, cy-40, 10, 220, 360, 3, WHITE); //white
             //face
         LCD_fillCircle(cx, cy, 55, EYELLOW);
 
@@ -104,6 +108,8 @@ void sad_frame(){
    
 
     if(sad_state==0){
+        LCD_drawArc(cx-35, cy-40, 10, 180, 320, 3, WHITE); //white
+        LCD_drawArc(cx+35, cy-40, 10, 220, 360, 3, WHITE); //white
         //face
         LCD_fillCircle(cx, cy, 55, EYELLOW);
 

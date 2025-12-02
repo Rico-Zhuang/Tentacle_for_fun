@@ -8,6 +8,7 @@
 #include "./lib/emoji.h"
 #include "./lib/ST7735.h"
 #include "./lib/uart.h"
+#include "./lib/ultrasonic.h"
 
 double magnitude;
 uint8_t cx = LCD_WIDTH / 2;
@@ -44,12 +45,16 @@ ISR(TIMER1_COMPA_vect) {
 int main(void) {
     //char buf[50];
     UART_init(BAUD_PRESCALER);
-    
+
+    ultrasonic_init();
+
     ADC_Init();
     Timer1_Init();
+
     lcd_init();
     LCD_setScreen(WHITE);
     smile_frame();
+
     PCA9685_Init(50.0); // 50Hz for servos
     sei(); // Enable global interrupts
 
@@ -61,46 +66,54 @@ int main(void) {
     happy_state=0;  
     sad_state=0;
     
-    while (1) {
-        //Motion_ConicalScan(100.0, 5); _delay_ms(50);
-        if((magnitude < 100) || (magnitude > 200)){
-            LCD_drawArc(cx-35, cy-40, 10, 180, 320, 3, WHITE); //white
-            LCD_drawArc(cx+35, cy-40, 10, 220, 360, 3, WHITE); //white
+     while (1) {
+        // 非阻塞获取速度等级（内部自动管理测距）
+        SpeedLevel lvl = ultrasonic_get_speed_nonblocking();
+
+        switch (lvl) {
+            case SPEED_FAST:
+                angry_frame();
+                angry_state = 1;
+                smile_state = 0;
+                happy_state = 0;
+                sad_state   = 0;
+                LCD_drawArc(cx-35, cy-40, 10, 180, 320, 3, WHITE);
+                LCD_drawArc(cx+35, cy-40, 10, 220, 360, 3, WHITE);
+                break;
+
+            case SPEED_SLOW:
+                happy_frame();
+                happy_state = 1;
+                smile_state = 0;
+                angry_state = 0;
+                sad_state   = 0;
+
+                LCD_drawArc(cx-35, cy-40, 10, 180, 320, 3, WHITE);
+                LCD_drawArc(cx+35, cy-40, 10, 220, 360, 3, WHITE);
+                break;
+
+            case SPEED_NONE:
+                smile_frame();
+                sad_state   = 0;
+                smile_state = 1;
+                angry_state = 0;
+                happy_state = 0;
+
+                LCD_drawArc(cx-35, cy-40, 10, 180, 320, 3, WHITE);
+                LCD_drawArc(cx+35, cy-40, 10, 220, 360, 3, WHITE);
+                break;
+
+            case SPEED_BACK:
+                sad_frame();
+                happy_state = 0;
+                smile_state = 0;
+                angry_state = 0;
+                sad_state   = 1;
+                break;
+
         }
-        // sprintf(buf, "Magnitude: %.2f\n", magnitude);
-        // UART_putstring(buf);
-        if(magnitude < 50){
-            smile_frame();
-            smile_state=1;
-            angry_state=0;
-            happy_state=0;
-            sad_state=0;
-        }
-        else if ((magnitude > 50) && (magnitude < 100))
-        {
-            angry_frame();/* code */
-            angry_state=1;
-            smile_state=0;  
-            happy_state=0;
-            sad_state=0;
-        }
-        else if ((magnitude > 100) && (magnitude < 200))
-        {
-            happy_frame();/* code */
-            happy_state=1;
-            smile_state=0;
-            angry_state=0;
-            sad_state=0;
-        }
-        else if(magnitude>200){
-            sad_frame();
-            sad_state=1;
-            smile_state=0;
-            angry_state=0;
-            happy_state=0;
-        }
-            
     }
 
+    // 理论上不会到这里
     return 0;
 }
