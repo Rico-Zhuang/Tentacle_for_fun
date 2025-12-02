@@ -229,13 +229,13 @@ SpeedLevel ultrasonic_get_speed_nonblocking(void)
         UART_putstring(" cm/s\r\n");
 
         // 开启下一次测量
-        _delay_ms(200); 
+        _delay_ms(500); 
         ultrasonic_start_measurement();
 
         // ===== 3) 根据速度分类 =====
-        if (speed < -5.0f && speed > -10.0f) {
+        if (speed < -5.0f && speed > -15.0f) {
             return SPEED_SLOW;
-        } else if (speed <= -10.0f) {
+        } else if (speed <= -15.0f) {
             return SPEED_FAST;
         } else if (speed > 4.0f) {
             return SPEED_BACK;
