@@ -50,10 +50,11 @@
 
 // Your WiFi credentials.
 // Set password to "" for open networks.
-#define MY_SSID                     "TMOBILE-5E74" // FILL THIS OUT
-#define MY_PASSWORD                 "cd5kn2shvr6" // FILL THIS OUT
+// #define MY_SSID                     "TMOBILE-5E74" // FILL THIS OUT
+// #define MY_PASSWORD                 "cd5kn2shvr6" // FILL THIS OUT
 
-
+#define MY_SSID                     "EvoPhilly" // FILL THIS OUT
+// #define MY_PASSWORD                 "cd5kn2shvr6" // FILL THIS OUT
 // const char *ssid = "TMOBILE-5E74";
 // const char *password = "cd5kn2shvr6";
 
@@ -150,7 +151,7 @@ void setup()
 {
   // Debug console
   Serial.begin(9600);
-  Blynk.begin(auth, MY_SSID, MY_PASSWORD);
+  Blynk.begin(auth, MY_SSID, NULL);
   
   // pinMode(GPIO_V0, OUTPUT);
   // pinMode(GPIO_V1, OUTPUT);
