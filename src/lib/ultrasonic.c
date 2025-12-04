@@ -29,7 +29,7 @@
 #define INTERVAL_TRIGGER_MS  30.0f   // 每 30ms 触发一次测量
 #define INTERVAL_SPEED_MS    100.0f  // 每 100ms 计算一次速度
 
-#define STATE_HOLD_MS  2500.0f // 表情维持
+#define STATE_HOLD_MS  2000.0f // 表情维持
 
 // 全局变量
 volatile uint16_t echo_start_ticks = 0;
