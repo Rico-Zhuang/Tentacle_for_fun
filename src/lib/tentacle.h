@@ -16,6 +16,8 @@
 //int clip(int val, int min_val, int max_val);
 void Tentacle_Move(float direction_angle, float bending_amount);
 
+void Tentacle_Center(void);
+
 void Motion_Breathing(float direction);
 void Motion_Rotate(float bend_val, int speed_delay);
 void Motion_ConicalScan(float bend_val, int speed_delay);

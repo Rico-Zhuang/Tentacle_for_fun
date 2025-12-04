@@ -28,7 +28,7 @@
 #ifndef PCA9685_H_
 #define PCA9685_H_
 
-#define F_CPU 16000000UL // 必须定义在 <util/delay.h> 之前
+//#define F_CPU 16000000UL // 必须定义在 <util/delay.h> 之前
 
 //#include <xc.h>
 #include <stdint.h>

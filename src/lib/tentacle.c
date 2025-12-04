@@ -31,6 +31,12 @@ void Tentacle_Move(float direction_angle, float bending_amount){
 
 }
 
+void Tentacle_Center(void) {
+    SetServoAngle(0, 90);
+    SetServoAngle(1, 90); 
+    SetServoAngle(2, 90);
+}
+
 // Breathing motion 
 void Motion_Breathing(float direction) {
     

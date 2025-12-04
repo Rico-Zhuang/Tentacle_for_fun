@@ -4,7 +4,7 @@
  * Frequency: 16MHz
  */
 
-#define F_CPU 16000000UL 
+//#define F_CPU 16000000UL 
 
 #include <avr/io.h>
 #include <avr/interrupt.h> 
@@ -15,6 +15,13 @@
 #include "./lib/adc.h"
 
 #define PI 3.14159265
+#define BENDING_AMP 1.0
+
+int raw_x = 0;
+int raw_y = 0;
+int raw_esp1 = 0;
+int raw_esp2 = 0;
+double bending_factor = 0.0;
 
 // --- ADC 初始化 ---
 void ADC_Init() {
@@ -49,4 +56,47 @@ void Timer1_Init(void) {
     OCR1A = 4999;
     TIMSK1 |= (1 << OCIE1A); // Enable Compare Match A Interrupt
 }
+
+
+ISR(TIMER1_COMPA_vect) {
+    raw_x = ADC_Read(0);
+    raw_y = ADC_Read(1);
+    raw_esp1 = ADC_Read(2);
+    raw_esp2 = ADC_Read(3);
+    
+    int center_1 = 512;
+    
+    int center_2 = 325; // 650 / 2
+    double scale_factor = 512.0 / 325.0; 
+
+    int deadzone = 30; // 死区
+
+    //Mapping and Combining Signals
+    
+    double map_x1 = raw_x - center_1;
+    double map_y1 = raw_y - center_1;
+
+    double map_x2 = (raw_esp1 - center_2 - 15) * scale_factor;
+    double map_y2 = (raw_esp2 - center_2 - 15) * scale_factor;
+
+    double final_map_x = map_x1 + map_x2;
+    double final_map_y = map_y1 + map_y2;
+
+    double magnitude = sqrt(final_map_x * final_map_x + final_map_y * final_map_y);
+    
+    if (magnitude < deadzone) {
+         // Tentacle_Move(0, 0); 
+    } else {
+        double angle_rad = atan2(final_map_y, final_map_x);
+        double angle_deg = angle_rad * 180.0 / PI;
+        if (angle_deg < 0) angle_deg += 360.0;
+       
+        bending_factor = BENDING_AMP * magnitude / 512.0;
+        
+        if (bending_factor > 1.0) bending_factor = 1.0;
+        
+        Tentacle_Move(angle_deg, bending_factor);
+    }
+}
+
 
