@@ -13,7 +13,7 @@
 double magnitude;
 uint8_t cx = LCD_WIDTH / 2;
 uint8_t cy = LCD_HEIGHT / 2;
-uint8_t angry_mode = 0;
+//uint8_t angry_mode = 0;
 
 void set_emoji_state(uint8_t happy, uint8_t smile, uint8_t angry, uint8_t sad)
 {
@@ -57,7 +57,7 @@ int main(void) {
             case SPEED_FAST:
                 angry_frame();
                 set_emoji_state(0,0,1,0);
-                angry_mode = 1;
+                //angry_mode = 1;
                 //Motion_Strike(30.0);
                 break;
             case SPEED_SLOW:
@@ -68,7 +68,7 @@ int main(void) {
             case SPEED_NONE:
                 smile_frame();
                 set_emoji_state(0,1,0,0);
-                angry_mode = 0;
+                //angry_mode = 0;
                 break;
 
             case SPEED_BACK:

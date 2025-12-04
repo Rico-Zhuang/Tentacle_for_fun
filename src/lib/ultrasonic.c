@@ -46,7 +46,7 @@ static float last_valid_distance = 0.0f;
 // 缓存当前的计算结果，供外部瞬间读取
 static SpeedLevel current_speed_level = SPEED_NONE;
 
-extern uint8_t angry_mode;
+//extern uint8_t angry_mode;
 
 // =========================================================
 //  Helper: 获取当前系统时间 (单位：近似 ms)
@@ -245,8 +245,9 @@ void ultrasonic_update(void)
         SpeedLevel raw_state = SPEED_NONE;
 
         if (speed < -5.0f && speed > -15.0f) {
-            if (angry_mode == 1) raw_state = SPEED_NONE;
-            else raw_state = SPEED_SLOW;
+            //if (angry_mode == 1) raw_state = SPEED_NONE;
+            //else 
+            raw_state = SPEED_SLOW;
         } else if (speed <= -15.0f) {
             raw_state = SPEED_FAST;
         } else if (speed > 4.0f) {

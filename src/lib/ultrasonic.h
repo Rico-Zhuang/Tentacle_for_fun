@@ -23,6 +23,6 @@ SpeedLevel ultrasonic_get_speed_status(void);
 
 // void UART_putstring(char *str);
 // void UART_print_float(float x);
-extern uint8_t angry_mode;
+//extern uint8_t angry_mode;
 
 #endif
