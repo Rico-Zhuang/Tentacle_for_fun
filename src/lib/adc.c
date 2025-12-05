@@ -10,9 +10,11 @@
 #include <avr/interrupt.h> 
 #include <util/delay.h>
 #include <math.h>
+#include <stdio.h>
 #include "./lib/PCA9685.h"
 #include "./lib/tentacle.h"
 #include "./lib/adc.h"
+#include "./lib/uart.h"
 
 #define PI 3.14159265
 #define BENDING_AMP 1.0
@@ -21,7 +23,6 @@ int raw_x = 0;
 int raw_y = 0;
 int raw_esp1 = 0;
 int raw_esp2 = 0;
-double bending_factor = 0.0;
 
 // --- ADC 初始化 ---
 void ADC_Init() {
@@ -69,7 +70,7 @@ ISR(TIMER1_COMPA_vect) {
     int center_2 = 325; // 650 / 2
     double scale_factor = 512.0 / 325.0; 
 
-    int deadzone = 30; // 死区
+    int deadzone = 50; // 死区
 
     //Mapping and Combining Signals
     
@@ -85,7 +86,8 @@ ISR(TIMER1_COMPA_vect) {
     double magnitude = sqrt(final_map_x * final_map_x + final_map_y * final_map_y);
     
     if (magnitude < deadzone) {
-         // Tentacle_Move(0, 0); 
+         //Tentacle_Move(30, 0.8); 
+
     } else {
         double angle_rad = atan2(final_map_y, final_map_x);
         double angle_deg = angle_rad * 180.0 / PI;

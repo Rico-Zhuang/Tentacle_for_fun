@@ -100,17 +100,20 @@ void Motion_SpiralOut() {
 // target_angle: 攻击方向
 void Motion_Strike(float target_angle) {
     // 1. 蓄力：先稍微向反方向弯一点点 (预备动作)
-    Tentacle_Move(target_angle + 180, 0.2); 
-    _delay_ms(500);
+    Tentacle_Move(210, 1.0);
+    _delay_ms(150);
+    Tentacle_Center();
+    // Tentacle_Move(target_angle + 180, 0.2); 
+    // _delay_ms(500);
     
-    // 2. 攻击：瞬间弯曲到最大
-    Tentacle_Move(target_angle, 1.0);
-    _delay_ms(300); // 咬住 300ms
+    // // 2. 攻击：瞬间弯曲到最大
+    // Tentacle_Move(target_angle, 1.0);
+    // _delay_ms(300); // 咬住 300ms
     
-    // 3. 撤退：慢慢恢复直立
-    for (float b = 1.0; b >= 0; b -= 0.02) {
-        Tentacle_Move(target_angle, b);
-        _delay_ms(10);
-    }
+    // // 3. 撤退：慢慢恢复直立
+    // for (float b = 1.0; b >= 0; b -= 0.02) {
+    //     Tentacle_Move(target_angle, b);
+    //     _delay_ms(10);
+    // }
 }
 

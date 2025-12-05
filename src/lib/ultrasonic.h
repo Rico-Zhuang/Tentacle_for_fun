@@ -2,6 +2,9 @@
 #define ULTRASONIC_H
 
 #include <stdint.h>
+#include "./lib/constants.h"
+#include "./lib/tentacle.h"
+#include "./lib/adc.h"
 
 typedef enum {
     SPEED_NONE = 0,

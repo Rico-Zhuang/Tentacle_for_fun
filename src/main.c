@@ -1,6 +1,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
+#include "./lib/ultrasonic.h"
 #include "./lib/adc.h"
 #include "./lib/PCA9685.h"
 #include "./lib/tentacle.h"
@@ -8,7 +9,7 @@
 #include "./lib/emoji.h"
 #include "./lib/ST7735.h"
 #include "./lib/uart.h"
-#include "./lib/ultrasonic.h"
+
 
 double magnitude;
 uint8_t cx = LCD_WIDTH / 2;
@@ -57,6 +58,7 @@ int main(void) {
             case SPEED_FAST:
                 angry_frame();
                 set_emoji_state(0,0,1,0);
+                
                 //angry_mode = 1;
                 //Motion_Strike(30.0);
                 break;

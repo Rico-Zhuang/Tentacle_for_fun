@@ -53,9 +53,12 @@
 // #define MY_SSID                     "TMOBILE-5E74" // FILL THIS OUT
 // #define MY_PASSWORD                 "cd5kn2shvr6" // FILL THIS OUT
 
-#define MY_SSID                     "EvoPhilly" // FILL THIS OUT
-// #define MY_PASSWORD                 "cd5kn2shvr6" // FILL THIS OUT
-// const char *ssid = "TMOBILE-5E74";
+#define MY_SSID                     "TMOBILE-5E74" // FILL THIS OUT
+#define MY_PASSWORD                 "cd5kn2shvr6" // FILL THIS OUT
+
+// #define MY_SSID                     "AirPennNet-Device" // FILL THIS OUT
+// #define MY_PASSWORD                 "penn1740wifi" // FILL THIS OUT
+// const char *ssid = "TMOBILE-5E74"，EvoPhilly;
 // const char *password = "cd5kn2shvr6";
 
 #include <WiFi.h>
@@ -151,7 +154,7 @@ void setup()
 {
   // Debug console
   Serial.begin(9600);
-  Blynk.begin(auth, MY_SSID, NULL);
+  Blynk.begin(auth, MY_SSID, MY_PASSWORD);
   
   // pinMode(GPIO_V0, OUTPUT);
   // pinMode(GPIO_V1, OUTPUT);

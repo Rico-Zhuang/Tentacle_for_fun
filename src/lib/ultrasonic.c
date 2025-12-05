@@ -5,6 +5,8 @@
 #include <util/delay.h>
 #include <math.h>
 #include "./uart.h"
+#include "./lib/adc.h"
+
 
 #define TRIG_PIN  PD2
 #define ECHO_PIN  PD3
@@ -226,8 +228,8 @@ void ultrasonic_update(void)
         char debug_buf[64];
         // 打印格式：距离 | 位移变化 | 计算出的速度
         // D: Current Distance, dD: Delta Distance, S: Speed
-        sprintf(debug_buf, "D:%.1f cm | dD:%.1f | Spd:%.1f\r\n", d, delta_d, speed);
-        UART_putstring(debug_buf); 
+        // sprintf(debug_buf, "D:%.1f cm | dD:%.1f | Spd:%.1f\r\n", d, delta_d, speed);
+        // UART_putstring(debug_buf); 
         // ==========================================
 
         time_last_speed_calc = now;
@@ -248,12 +250,15 @@ void ultrasonic_update(void)
             //if (angry_mode == 1) raw_state = SPEED_NONE;
             //else 
             raw_state = SPEED_SLOW;
-        } else if (speed <= -15.0f) {
+        } else if (speed <= -15.0f) { // angry
             raw_state = SPEED_FAST;
-        } else if (speed > 4.0f) {
+            Motion_Strike(0);
+                       
+        } else if (speed > 4.0f) { // cry
             raw_state = SPEED_BACK;
+            Motion_Rotate(0.5, 2);
         } else {
-            raw_state = SPEED_NONE;
+            raw_state = SPEED_NONE; // smile
         }
 
         // === 2. 状态保持逻辑 (State Holding) ===
